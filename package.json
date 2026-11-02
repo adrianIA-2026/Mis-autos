@@ -1,0 +1,9 @@
+{
+  "name": "mis-autos",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8000 --bind 127.0.0.1",
+    "test": "node --test tests/app.test.cjs"
+  }
+}
