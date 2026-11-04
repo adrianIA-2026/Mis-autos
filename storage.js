@@ -1,0 +1,13 @@
+/* Transacciones atómicas. Nunca elimina ni sobrescribe el respaldo legacy v1. */
+'use strict';
+(function(root){
+ const DB='mis-autos',LEGACY_KEY='mis-autos-v1';let db;
+ const request=q=>new Promise((resolve,reject)=>{q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);});
+ function complete(tx){return new Promise((resolve,reject)=>{tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error||Error('No se pudo completar el guardado.'));tx.onerror=()=>{};});}
+ async function open(){if(db)return db;const q=indexedDB.open(DB,1);q.onupgradeneeded=()=>q.result.createObjectStore('state');db=await request(q);db.onversionchange=()=>{db.close();db=null;};return db;}
+ async function read(){const database=await open();const tx=database.transaction('state','readonly');const done=complete(tx);const [value]=await Promise.all([request(tx.objectStore('state').get('current')),done]);return value;}
+ async function write(data,expectedRevision){const database=await open();return new Promise((resolve,reject)=>{const tx=database.transaction('state','readwrite');const store=tx.objectStore('state');let nextRevision;let conflict=false;const q=store.get('current');q.onsuccess=()=>{const current=q.result;const actual=current?.revision??0;if(actual!==expectedRevision){conflict=true;tx.abort();return;}nextRevision=actual+1;store.put({revision:nextRevision,data},'current');};tx.oncomplete=()=>resolve(nextRevision);tx.onabort=()=>reject(conflict?Error('Los datos cambiaron en otra ventana. Cerrá este formulario y recargá antes de guardar.'):tx.error||Error('No se pudo guardar.'));tx.onerror=()=>{};});}
+ async function load(){const saved=await read();if(saved){const data=MisAutosCore.validate(saved.data);if(saved.data.catalogRevision!==1||saved.data.version!==3){try{const revision=await write(data,saved.revision);return {data,revision,migrated:false};}catch(error){const latest=await read();if(latest&&latest.revision!==saved.revision)return {data:MisAutosCore.validate(latest.data),revision:latest.revision,migrated:false};throw error;}}return {data,revision:saved.revision,migrated:false};}const raw=localStorage.getItem(LEGACY_KEY);const data=raw===null?MisAutosCore.initial():MisAutosCore.validate(JSON.parse(raw));try{const revision=await write(data,0);return {data,revision,migrated:raw!==null};}catch(error){const concurrent=await read();if(concurrent)return {data:MisAutosCore.validate(concurrent.data),revision:concurrent.revision,migrated:false};throw error;}}
+ async function recovery(){try{const saved=await read();if(saved)return saved.data;}catch{}const raw=localStorage.getItem(LEGACY_KEY);if(raw===null)return null;try{return JSON.parse(raw);}catch{return raw;}}
+ root.MisAutosStore={load,write,read,recovery,LEGACY_KEY};
+})(globalThis);
