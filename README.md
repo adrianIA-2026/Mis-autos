@@ -14,9 +14,19 @@ Los archivos del programa son públicos, pero tus registros y fotos se guardan s
 
 En la revisión del repositorio publicado faltaba la carpeta de iconos: el manifiesto y el service worker apuntaban a imágenes que no estaban subidas. Este paquete corregido deja los cuatro iconos en la raíz, junto a `index.html`, y actualiza sus rutas en el manifiesto, la página y el service worker. Subí **todos** los archivos extraídos y reemplazá los anteriores. No borres los datos de Chrome: la corrección conserva la misma dirección y el mismo almacenamiento de tus registros.
 
+### Si Chrome sigue leyendo la configuración anterior
+
+La captura del teléfono mostraba rutas `icons/icon-192.png` aunque el archivo corregido en GitHub ya usaba `icon-192.png`. La segunda revisión enlaza un manifiesto nuevo, **manifest-instalar-v2.json**, y cambia la versión del caché del service worker para evitar reutilizar la configuración antigua. Mantiene el mismo identificador de aplicación, dirección de inicio y base local: no borra tus registros.
+
+Subí todos los archivos del ZIP nuevo, incluido **manifest-instalar-v2.json**. Cuando GitHub termine de publicar, abrí esta dirección desde Chrome:
+
+https://adriania-2026.github.io/Mis-autos/?instalar=2
+
+Esperá el mensaje de disponibilidad sin conexión, cerrá todas las pestañas de Mis Autos y volvé a abrir la dirección. Si aparece el botón **Instalar aplicación** dentro de la página, podés usarlo; también está el menú de Chrome. No borres el almacenamiento del sitio.
+
 ## 2. Descargar y extraer
 
-1. Descargá **Mis-Autos-publicacion-corregida.zip** desde el chat.
+1. Descargá **Mis-Autos-instalacion-v2.zip** desde el chat.
 2. Extraelo en tu computadora. No subas el ZIP cerrado a GitHub.
 3. Dentro deben verse `index.html`, `app.js`, `core.js`, `storage.js`, `styles.css`, `sw.js`, `manifest.webmanifest`, los cuatro archivos de iconos (`icon.svg`, `icon-192.png`, `icon-512.png` y `maskable-512.png`) y este README. El archivo oculto `.nojekyll` también está incluido, aunque tu explorador podría no mostrarlo.
 
