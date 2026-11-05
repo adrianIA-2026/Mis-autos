@@ -10,11 +10,15 @@ Si ya cargaste datos en una versión anterior, abrila y usá **Exportar copia**.
 
 Los archivos del programa son públicos, pero tus registros y fotos se guardan solo en el navegador de tu dispositivo. Publicar el programa no sube esos registros. No incluyas archivos JSON de respaldo entre los archivos que subas a GitHub.
 
+## Corrección de la instalación desde Android
+
+En la revisión del repositorio publicado faltaba la carpeta de iconos: el manifiesto y el service worker apuntaban a imágenes que no estaban subidas. Este paquete corregido deja los cuatro iconos en la raíz, junto a `index.html`, y actualiza sus rutas en el manifiesto, la página y el service worker. Subí **todos** los archivos extraídos y reemplazá los anteriores. No borres los datos de Chrome: la corrección conserva la misma dirección y el mismo almacenamiento de tus registros.
+
 ## 2. Descargar y extraer
 
-1. Descargá **Mis-Autos-para-GitHub.zip** desde el chat.
+1. Descargá **Mis-Autos-publicacion-corregida.zip** desde el chat.
 2. Extraelo en tu computadora. No subas el ZIP cerrado a GitHub.
-3. Dentro deben verse `index.html`, `app.js`, `core.js`, `storage.js`, `styles.css`, `sw.js`, `manifest.webmanifest`, la carpeta `icons` y este README. El archivo oculto `.nojekyll` también está incluido, aunque tu explorador podría no mostrarlo.
+3. Dentro deben verse `index.html`, `app.js`, `core.js`, `storage.js`, `styles.css`, `sw.js`, `manifest.webmanifest`, los cuatro archivos de iconos (`icon.svg`, `icon-192.png`, `icon-512.png` y `maskable-512.png`) y este README. El archivo oculto `.nojekyll` también está incluido, aunque tu explorador podría no mostrarlo.
 
 ## 3. Subir al repositorio de GitHub
 
@@ -22,9 +26,9 @@ Los archivos del programa son públicos, pero tus registros y fotos se guardan s
 2. Si el repositorio es privado y querés hacerlo público, abrí **Settings → General → Danger Zone → Change repository visibility → Make public** y seguí la confirmación de GitHub. Si ya es público, omití este paso. Verificá antes que no tenga respaldos o archivos personales, porque su contenido e historial pasarán a ser públicos.
 3. Volvé a **Code** y seleccioná la rama **main**.
 4. Elegí **Add file → Upload files**.
-5. Arrastrá **el contenido de la carpeta extraída**, incluida `icons`. No arrastres una carpeta contenedora: `index.html` debe quedar directamente en la raíz del repositorio.
+5. Arrastrá **el contenido de la carpeta extraída**, incluidos los cuatro archivos de iconos. No arrastres una carpeta contenedora: `index.html` debe quedar directamente en la raíz del repositorio.
 6. Pulsá **Commit changes** para guardar los archivos en `main`. Si GitHub muestra una confirmación adicional, completala. Los archivos nuevos deben reemplazar sus versiones anteriores.
-7. Comprobá que `index.html` aparece al lado de `app.js`, `core.js` y `storage.js`, y que `icons` contiene las cuatro imágenes.
+7. Comprobá que `index.html` aparece al lado de `app.js`, `core.js` y `storage.js`, y que los cuatro iconos también están en la raíz.
 
 Si el repositorio conserva `MUESTRA.html` o una demo de pruebas que subiste antes, podés eliminar ese archivo desde GitHub para no confundirlo con la aplicación real. La página de inicio debe ser `index.html`.
 
@@ -38,7 +42,7 @@ Si el repositorio conserva `MUESTRA.html` o una demo de pruebas que subiste ante
 
    https://adrianIA-2026.github.io/Mis-autos/
 
-Esa dirección solo funcionará una vez que GitHub confirme el despliegue. No es la dirección `github.com/...` del código fuente. Este paquete no activa Pages ni publica por sí solo.
+Esa dirección solo funcionará una vez que GitHub confirme el despliegue. No es la dirección `github.com/...` del código fuente. Este paquete no activa Pages ni publica por sí solo. Los iconos van en la raíz para que puedas seleccionar todos los archivos desde Android sin tener que subir carpetas.
 
 ## 5. Instalar en tu Android
 
